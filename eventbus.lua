@@ -1,7 +1,7 @@
 local M = {}
 
 function M.new()
-    local eventemitter = {}
+    local bus = {}
 
     local handlers = {}
 
@@ -11,11 +11,11 @@ function M.new()
     -- @tparam string event the event name
     -- @tparam function handler the event handler
     -- @tparam[opt] int index the index at which to insert the handler (1 is the highest priority)
-    eventemitter.on = function (event, handler, index)
+    bus.on = function (event, handler, index)
         if not event then error('Invalid event name') end
         if type(handler) ~= 'function' then error('Invalid event handler') end
         if not handlers[event] then handlers[event] = {} end
-        eventemitter.off(event, handler)
+        bus.off(event, handler)
         table.insert(handlers[event], index or #handlers[event] + 1, handler)
     end
 
@@ -25,7 +25,7 @@ function M.new()
     -- @tparam string event the event name
     -- @tparam function handler the event handler to unsubscribe
     -- @treturn bool whether the handler was successfully removed
-    eventemitter.off = function (event, handler)
+    bus.off = function (event, handler)
         local h = handlers[event]
         if not h then return end
         for i = 1, #h do
@@ -34,6 +34,7 @@ function M.new()
                 return true
             end
         end
+
         return false
     end
 
@@ -45,7 +46,7 @@ function M.new()
     --
     -- @tparam string event the event name
     -- @tparam ... ... the remaining paramters are passed on to the handler
-    eventemitter.emit = function (event, ...)
+    bus.emit = function (event, ...)
         local h = handlers[event]
         if not h then return end
         for i = 1, #h do
@@ -54,7 +55,7 @@ function M.new()
         end
     end
 
-    return eventemitter
+    return bus
 end
 
 return M

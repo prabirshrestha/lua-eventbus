@@ -1,6 +1,6 @@
-# EventEmitter for lua
+# Event Bus for lua
 
-EventEmitter for lua extracted from [vis](https://github.com/martanne/vis).
+Event Bus (aka Event Emitter) for lua extracted from [vis](https://github.com/martanne/vis).
 
 # LICENSE
 
